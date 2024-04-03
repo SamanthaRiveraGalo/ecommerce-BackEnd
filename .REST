@@ -1,0 +1,117 @@
+###
+GET http://localhost:8080/api/products
+//funciona
+
+###
+GET http://localhost:8080/api/products/65f5acf025b44c56fc8614fe
+//funciona
+
+###
+POST http://localhost:8080/api/products
+//funciona
+Content-Type: application/json
+
+{
+"title": "testing","description": "sin","price":180000 , "category":"mujer","thumbnail": "sin img","code": "A258981","stock": 10
+}
+
+###
+PUT  http://localhost:8080/api/products/65c01a81f8e99ca4d9f07eca
+//funciona
+
+{
+"title": "Nike prueba ","description": "sin","category":"hombre","price":50000 ,"thumbnail": "sin img","code": "A12","stock": 15
+}
+
+###
+DELETE  http://localhost:8080/api/products/65c01a81f8e99ca4d9f07eca
+
+//funciona
+
+
+-----------------CARRITO----------------------------------------
+###
+GET http://localhost:8080/api/carts
+//Funciona
+
+###
+GET  http://localhost:8080/api/carts/658387545458d0548e7dbe2535c7
+//funciona
+
+###
+POST http://localhost:8080/api/carts/65838a2fa76ab3cf10efaca7/products/658dc9b8d389e566d60086ac
+
+###
+POST http://localhost:8080/api/carts
+
+###
+DELETE http://localhost:8080/api/carts/65838a2fa76ab3cf10efaca7/products/658383513b801dcfe9bc2075
+//funciona
+
+###
+DELETE http://localhost:8080/api/carts/65838a2fa76ab3cf10efaca7
+//funciona
+
+###
+PUT http://localhost:8080/api/carts/6583875458d08e7dbe2535c7
+
+Content-Type: application/json
+
+{
+  "_id": "658383513b801dcfe9bc2075", "quantity": 8 
+}
+   
+
+###
+PUT http://localhost:8080/api/carts/6583875458d08e7dbe2535c7/products/658383513b801dcfe9bc2075
+Content-Type: application/json
+{
+  "quantity": 2
+}
+
+//COMPRA
+###
+POST http://localhost:8080/api/carts/6583875458d08e7dbe2535c7/purchase
+
+
+------------------USER-------------------
+###
+GET http://localhost:8080/api/users
+
+###
+GET http://localhost:8080/api/users/s@gmail.com
+
+###
+GET  http://localhost:8080/api/users/65a6f19661aae3e7833df1d7
+
+###
+GET  http://localhost:8080/api/users/premium/65a6f19661aae3e7833df1d7
+
+###
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+    "first_name": "Samantha",
+    "last_name": "Rivera Galo",
+    "email": "riveragalosamantha@gmail.com",
+    "password": "123456"
+}
+
+###
+PUT http://localhost:8080/api/users/65a6f446c032ca161f68d2a6
+
+{
+    "first_name": "pruebaPut",
+    "last_name": "prueba",
+    "email": "prueba@gmail.com",
+    "password": "1234"
+}
+
+###
+DELETE http://localhost:8080/api/users/65a6f446c032ca161f68d2a6
+
+
+# token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YTZmMTk2NjFhYWUzZTc4MzNkZjFkNyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzA4NzMyMTcxLCJleHAiOjE3MDg4MTg1NzF9.3fYILGv4YpfFTIQU3KWiTBFl25ugBxL9CiDT8hhFvHg
+
+

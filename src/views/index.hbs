@@ -1,0 +1,27 @@
+{{!-- aca va todo lo que se va a renderizar e insertar en body en el main.handlebars --}}
+{{!-- todo lleva doble llaves, solo el body layouts lleva 3 llaves --}}
+<section>
+    <div>
+        <h1>Hola {{ name }} bienvenidos a Nike. </h1>
+    </div>
+    <div>
+        <ul>
+            {{#each products }}
+            <li>
+                <div class="info">
+                    <div>{{this.code}}</div>
+                    <figure>
+                         <img class="img-product" src={{this.thumbnails}}>
+                    </figure>
+                    <div>
+                        <h2>{{this.title}}</h2>
+                        <p> {{this.description}}</p>
+                        <p>{{this.price}}</p>
+                        <p>Stock: {{this.stock}}</p>
+                    </div>
+                </div>
+            </li>
+            {{/each}}
+        </ul>
+    </div>
+</section>

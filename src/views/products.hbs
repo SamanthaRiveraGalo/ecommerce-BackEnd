@@ -1,0 +1,35 @@
+<div class="conteiner">
+    <h1 class="title">Productos</h1>
+    <h2>Bienvenido</h2>
+
+    <div>
+        <p>{{user.name}}</p>
+        <p>{{user.role}}</p>
+    </div>
+
+    <a href="/api/sessions/logout"><button>Salir</button></a>
+
+    <div class="row conteiner-products" style="column-gap: 1rem; row-gap: 1rem;">
+        {{#each products}}
+        <div class="col-md-4 card-product">
+            <p class="name">{{this.title}}</p>
+            <figure>
+                <img src="{{this.thumbnail}}" alt="">
+            </figure>
+            <p class="price">{{this.price}}</p>
+        </div>
+        {{/each}}
+    </div>
+    <div class="text-center">
+        {{#if hasPrevPage}}
+        <a href="?page={{prevPage}}" class="btn btn-outline-dark">Anterior</a>
+        {{/if}}
+
+        <label for="">{{page}}</label>
+
+        {{#if hasNextPage}}
+        <a href="?page={{nextPage}}" class="btn btn-outline-dark">Siguiente</a>
+        {{/if}}
+
+    </div>
+</div>

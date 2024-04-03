@@ -1,0 +1,72 @@
+#usernameInput {
+    color: aqua;
+}
+
+.conteiner-products {
+    margin: 1rem ;
+    padding: 2rem 3rem;
+    display: flex;
+    justify-content: center;
+}
+
+.card-product {
+    border-radius: 10px ;
+    padding: 0.6rem 0;
+    background-color: #FFFDF9;
+    box-shadow: 1px 1px 4px 2px #D8D8D8;
+}
+
+.title {
+    display: flex;
+    justify-content: center;
+}
+
+figure {
+    width: 20%;
+}
+
+img {
+    width: 100%;
+}
+
+/* LOGIN */
+.conteiner{
+    display: flex;
+    justify-content: center;
+    padding: 3rem;
+}
+.conteiner-login, .conteiner-register{
+    width: 60%;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 3rem;
+    display: flex;
+    flex-direction: row;
+    column-gap: 2rem;
+}
+
+.conteiner-img{
+    width: 20rem;
+}
+
+.nike-logo{
+    width: 100%;
+}
+
+.conteiner-form, #loginForm, #registerForm{
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+}
+
+p > a{
+
+    text-decoration: none;
+}
+
+/* Register */
+
+
+
+
+

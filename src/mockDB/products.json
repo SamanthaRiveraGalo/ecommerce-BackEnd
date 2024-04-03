@@ -1,0 +1,56 @@
+[
+  {
+    "id": 1,
+    "title": "Nike Air Max SYSTM",
+    "description": "Originalmente diseñada para el running de alto rendimiento, la amortiguación Max Air brinda comodidad comprobada.",
+    "price": 68499,
+    "thumbnail": "https://nikearprod.vtexassets.com/arquivos/ids/701118-1000-1000?v=1780702250&width=1000&height=1000&aspect=true",
+    "code": "A123",
+    "stock": 10
+  },
+  {
+    "id": 2,
+    "title": "Nike Air Force Next Nature",
+    "description": "La amortiguación Nike Air, diseñada originalmente para el básquetbol de alto rendimiento, agrega comodidad y ligereza.",
+    "price": 84000,
+    "thumbnail": "https://nikearprod.vtexassets.com/arquivos/ids/498805-800-800?v=638151123208670000&width=800&height=800&aspect=true",
+    "code": "A456",
+    "stock": 15
+  },
+  {
+    "id": 3,
+    "title": "Nike Dunk Low SE",
+    "description": "La parte superior de cuero envejece hasta alcanzar una suavidad perfecta y cuenta con una confección duradera que recuerda el básquetbol de los 80.",
+    "price": 89999,
+    "thumbnail": "https://nikearprod.vtexassets.com/arquivos/ids/681854-800-800?v=638224575122130000&width=800&height=800&aspect=true",
+    "code": "A789",
+    "stock": 20
+  },
+  {
+    "id": 4,
+    "title": "Nike Air Max 90 Futura",
+    "description": "El acolchado suave alrededor del tobillo se combina con una amortiguación Air confiable para brindarte comodidad de primer nivel. Es divertido, cómodo, deportivo y cualquier otra cosa que desees",
+    "price": 100000,
+    "thumbnail": "https://nikearprod.vtexassets.com/arquivos/ids/699351-800-800?v=638229667793970000&width=800&height=800&aspect=true",
+    "code": "B123",
+    "stock": 25
+  },
+  {
+    "id": 5,
+    "title": "Nike Air Max AP",
+    "description": "Diseñada originalmente para el running de alto rendimiento, la innovadora unidad Air de largo completo tiene un perfil más bajo para brindar un estilo elegante y agrega una nueva sensación que tienes que probar.",
+    "price": 2524099,
+    "thumbnail": "https://nikearprod.vtexassets.com/arquivos/ids/456610-800-800?v=638149341826470000&width=800&height=800&aspect=true",
+    "code": "B456",
+    "stock": 20
+  },
+  {
+    "id": 6,
+    "title": "Nike Downshifter 12",
+    "description": "Brinda un ajuste con soporte y una pisada estable. Además, la sensación de ligereza posibilita una transición más fluida del entrenamiento a las actividades diarias. Comienza tu recorrido. Amárrate las agujetas y comienza a correr.",
+    "price": 60000,
+    "thumbnail": "https://nikearprod.vtexassets.com/arquivos/ids/317650-800-800?v=638128486031170000&width=800&height=800&aspect=true",
+    "code": "B789",
+    "stock": 30
+  }
+]
