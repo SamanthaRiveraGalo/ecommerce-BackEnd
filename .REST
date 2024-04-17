@@ -32,25 +32,21 @@ DELETE  http://localhost:8080/api/products/65c01a81f8e99ca4d9f07eca
 -----------------CARRITO----------------------------------------
 ###
 GET http://localhost:8080/api/carts
-//Funciona
 
 ###
 GET  http://localhost:8080/api/carts/658387545458d0548e7dbe2535c7
-//funciona
+
+###
+POST  http://localhost:8080/api/carts
 
 ###
 POST http://localhost:8080/api/carts/65838a2fa76ab3cf10efaca7/products/658dc9b8d389e566d60086ac
 
 ###
-POST http://localhost:8080/api/carts
-
-###
 DELETE http://localhost:8080/api/carts/65838a2fa76ab3cf10efaca7/products/658383513b801dcfe9bc2075
-//funciona
 
 ###
-DELETE http://localhost:8080/api/carts/65838a2fa76ab3cf10efaca7
-//funciona
+DELETE http://localhost:8080/api/carts/6583875458d08e7dbe2535c7
 
 ###
 PUT http://localhost:8080/api/carts/6583875458d08e7dbe2535c7
@@ -63,10 +59,10 @@ Content-Type: application/json
    
 
 ###
-PUT http://localhost:8080/api/carts/6583875458d08e7dbe2535c7/products/658383513b801dcfe9bc2075
+PUT http://localhost:8080/api/carts/66204ad24ea0f161946dd0d7/products/658383513b801dcfe9bc2075
 Content-Type: application/json
 {
-  "quantity": 2
+  "quantity": 10
 }
 
 //COMPRA
@@ -110,7 +106,7 @@ PUT http://localhost:8080/api/users/661be7a3fef7fb5a4ffe2090
 }
 
 ###
-DELETE http://localhost:8080/api/users/65a6f446c032ca161f68d2a6
+DELETE http://localhost:8080/api/users/65f8955fe80be34c89e12fce
 
 
 

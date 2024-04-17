@@ -70,9 +70,14 @@ class UserController {
     }
 
     deleteUser = async (req, res) => {
-        const { userId } = req.params
-        const result = await this.userServiceMongo.deleteUser(userId)
-        res.status(200).send({ message: "Usuario borrado", result })
+        try {
+            const { uid } = req.params
+            const result = await this.userServiceMongo.deleteUser(uid)
+            res.status(200).send({ message: "Usuario borrado", result })
+            
+        } catch (error) {
+            return res.status(500).json({ error: 'Error al eliminar el usuario' })
+        }
     }
 
     changeRole = async (req, res) => {
