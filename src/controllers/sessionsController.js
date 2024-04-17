@@ -59,16 +59,20 @@ class SessionsController {
             const { email, password } = req.body
 
             if (email === '' || password === '') {
-                return res.status(404).json({ error: "Por favor ingrese todos los datos" });
+                return res.status(404).json({ error: "Por favor ingrese todos los datos" })
             }
 
             const user = await userManager.getUserBy({ email: email })
 
             if (!isValidPassword(user, password)) {
-                return res.send('email o contraseña incorrecta');
+                return res.send('email o contraseña incorrecta')
             }
 
-            const token = createToken({ id: user._id, role: user.role });
+            user.last_connection = new Date()
+            await userManager.updateUser(user)
+            console.log(`La fecha de ingreso del usuario ${user.email} es ${user.last_connection}`)
+
+            const token = createToken({ id: user._id, role: user.role })
             req.logger.info(token)
 
             res.cookie('token', token, {
@@ -77,7 +81,7 @@ class SessionsController {
             }).json({
                 status: 'success',
                 message: 'logged in',
-            });
+            })
 
         } catch (error) {
             req.logger.error(error)
@@ -85,7 +89,7 @@ class SessionsController {
         }
     }
 
-    logout = (req, res) => {
+    logout = async (req, res) => {
 
         req.session.destroy(err => {
             if (err) return res.send({ status: 'error', error: err })
@@ -96,27 +100,27 @@ class SessionsController {
 
     current = async (req, res) => {
         try {
-          const user = await req.user;
-      
-          if (user) {
-            const { first_name, last_name, role } = user;
-            
-            const userDto = {
-              first_name,
-              last_name,
-              role
-            };
-      
-            logger.info(userDto);
-            res.json(userDto);
-          } else {
-            res.status(401).json({ error: "No autorizado" });
-          }
+            const user = await req.user;
+
+            if (user) {
+                const { first_name, last_name, role } = user;
+
+                const userDto = {
+                    first_name,
+                    last_name,
+                    role
+                };
+
+                logger.info(userDto);
+                res.json(userDto);
+            } else {
+                res.status(401).json({ error: "No autorizado" });
+            }
         } catch (error) {
-          console.error("Error de autenticación:", error);
-          res.status(500).json({ error: "Error interno" });
+            console.error("Error de autenticación:", error);
+            res.status(500).json({ error: "Error interno" });
         }
-      }
+    }
 
     github = async (req, res) => { }
 

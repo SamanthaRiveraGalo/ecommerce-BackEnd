@@ -92,26 +92,25 @@ POST http://localhost:8080/api/users
 Content-Type: application/json
 
 {
-    "first_name": "Samantha",
-    "last_name": "Rivera Galo",
-    "email": "riveragalosamantha@gmail.com",
+    "first_name": "update",
+    "last_name": "prueba update",
+    "email": "update@gmail.com",
     "password": "123456"
 }
 
+---no funciona con rest pero si con postman---
 ###
-PUT http://localhost:8080/api/users/65a6f446c032ca161f68d2a6
+PUT http://localhost:8080/api/users/661be7a3fef7fb5a4ffe2090
 
 {
-    "first_name": "pruebaPut",
-    "last_name": "prueba",
-    "email": "prueba@gmail.com",
-    "password": "1234"
+    "first_name": "prueba update",
+    "last_name": "update",
+    "email": "update@gmail.com",
+    "password": "123456"
 }
 
 ###
 DELETE http://localhost:8080/api/users/65a6f446c032ca161f68d2a6
 
-
-# token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1YTZmMTk2NjFhYWUzZTc4MzNkZjFkNyIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzA4NzMyMTcxLCJleHAiOjE3MDg4MTg1NzF9.3fYILGv4YpfFTIQU3KWiTBFl25ugBxL9CiDT8hhFvHg
 
 

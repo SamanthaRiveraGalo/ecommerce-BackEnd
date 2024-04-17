@@ -4,11 +4,6 @@ const userCollection = 'users'
 
 const UserSchema = Schema({
 
-    // fullname:{
-    //     type:String,
-    //     required: true
-    // },
-
     first_name: {
         type: String,
         required: true
@@ -33,7 +28,19 @@ const UserSchema = Schema({
         // required: true, 
     },
 
-    cart: [{type: Schema.Types.ObjectId,ref: 'carts',}]
+    cart: [{
+        type: Schema.Types.ObjectId,
+        ref: 'carts'
+    }],
+
+    documents: [{
+        name: String,
+        reference: String,
+    }],
+
+    last_connection: {
+        type: Date
+    }
 })
 
 const userModel = model(userCollection, UserSchema)

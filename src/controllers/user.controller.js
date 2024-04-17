@@ -100,6 +100,40 @@ class UserController {
             return res.status(500).json({ error: 'Error al actualizar el rol del usuario' })
         }
     }
+
+    uploadFiles = async (req, res) => {
+        try {
+            const { uid } = req.params
+            const files = req.files
+
+            const user = await this.userServiceMongo.getUserBy({ _id: uid })
+
+            if (!user) return res.send({ message: 'Usuario no encontrado'})
+            if (!files) return res.send({ message: 'Documentos no encontrados'})
+
+            user.documents.push(
+                {
+                    name: req.files['imageProfile'][0].originalname,
+                    reference: req.files['imageProfile'][0].path
+                },
+                {
+                    name: req.files['imageProduct'][0].originalname,
+                    reference: req.files['imageProduct'][0].path
+                },
+                {
+                    name: req.files['profileDocuments'][0].originalname,
+                    reference: req.files['profileDocuments'][0].path
+                }
+            )
+
+            await this.userServiceMongo.updateUser(uid,user)
+
+            res.status(200).json({message:'Documentos subidos correctamente'})
+
+        } catch (error) {
+            res.status(400).json({message: 'Error al subir archivos'})  
+        }
+    }
 }
 
 module.exports = UserController
