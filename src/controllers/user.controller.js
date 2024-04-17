@@ -104,12 +104,12 @@ class UserController {
     uploadFiles = async (req, res) => {
         try {
             const { uid } = req.params
-            const files = req.files
-
             const user = await this.userServiceMongo.getUserBy({ _id: uid })
-
+            
             if (!user) return res.send({ message: 'Usuario no encontrado'})
-            if (!files) return res.send({ message: 'Documentos no encontrados'})
+
+            if (!req.files) return res.send({ message: 'Documentos no encontrados'})
+            console.log('files:', req.files)
 
             user.documents.push(
                 {

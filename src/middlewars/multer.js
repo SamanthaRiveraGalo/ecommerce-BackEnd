@@ -3,16 +3,17 @@ const path = require('path')
 
 const storage = multer.diskStorage({
     destination: function (req,file,cb){
+    
         if (file.fieldname === 'imageProfile') {
-            cb(null, path.join(__dirname, './public/uploads/imageProfile'))
+            cb(null, path.join(`${__dirname}/public/uploads/profile`))
         }
 
         if (file.fieldname === 'imageProduct') {
-            cb(null, path.join(__dirname, './public/uploads/imageProduct'))
+            cb(null, path.join(`${__dirname}/public/uploads/products`))
         }
 
         if (file.fieldname === 'profileDocuments') {
-            cb(null, path.join(__dirname, './public/uploads/profileDocuments'))
+            cb(null, path.join(`${__dirname}/public/uploads/documents`))
         }
     },
 
@@ -21,6 +22,6 @@ const storage = multer.diskStorage({
     }
 })
 
-const uploader = multer({storage: storage})
+const uploader = multer(storage)
 
 module.exports = uploader
