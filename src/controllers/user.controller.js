@@ -74,7 +74,7 @@ class UserController {
             const { uid } = req.params
             const result = await this.userServiceMongo.deleteUser(uid)
             res.status(200).send({ message: "Usuario borrado", result })
-            
+
         } catch (error) {
             return res.status(500).json({ error: 'Error al eliminar el usuario' })
         }
@@ -92,13 +92,25 @@ class UserController {
                 return res.status(404).json({ error: 'Usuario no encontrado' })
             }
 
-            const newRole = user.role === 'user' ? 'premium' : 'user'
+            const requireDocuments = 3
 
-            await this.userServiceMongo.updateUser(uid, { role: newRole })
+            if (user.role === 'user' && user.documents.length === requireDocuments) {
 
-            user = await this.userServiceMongo.getUserBy({ _id: uid })
+                const newRole = 'premium'
+                await this.userServiceMongo.updateUser(uid, { role: newRole })
 
-            return res.status(200).json({ message: `Usuario ${user.first_name} ${user.last_name} ahora tiene el rol de ${user.role}` })
+                return res.status(200).json({ message: `Usuario ${user.first_name} ${user.last_name} ahora tiene el rol de ${newRole}`})
+            }
+
+            if (user.role === 'premium') {
+
+                user.role = 'user'
+                await this.userServiceMongo.updateUser(uid, { role: user.role })
+
+                return res.status(200).json({ message: `Usuario ${user.first_name} ${user.last_name} ahora tiene el rol de ${user.role}`})
+            } 
+                
+            return res.status(200).json({ message: `El usuario ya tiene el rol correcto: ${user.role}`})
 
         } catch (error) {
             console.log(error)
@@ -110,10 +122,10 @@ class UserController {
         try {
             const { uid } = req.params
             const user = await this.userServiceMongo.getUserBy({ _id: uid })
-            
-            if (!user) return res.send({ message: 'Usuario no encontrado'})
 
-            if (!req.files) return res.send({ message: 'Documentos no encontrados'})
+            if (!user) return res.send({ message: 'Usuario no encontrado' })
+
+            if (!req.files) return res.send({ message: 'Documentos no encontrados' })
             console.log('files:', req.files)
 
             user.documents.push(
@@ -131,12 +143,12 @@ class UserController {
                 }
             )
 
-            await this.userServiceMongo.updateUser(uid,user)
+            await this.userServiceMongo.updateUser(uid, user)
 
-            res.status(200).json({message:'Documentos subidos correctamente'})
+            res.status(200).json({ message: 'Documentos subidos correctamente' })
 
         } catch (error) {
-            res.status(400).json({message: 'Error al subir archivos'})  
+            res.status(400).json({ message: 'Error al subir archivos' })
         }
     }
 }

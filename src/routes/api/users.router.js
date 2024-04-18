@@ -27,7 +27,7 @@ router.delete('/:uid', deleteUser)
 //cambio de rol
 router.get('/premium/:uid', changeRole)
 
-//documentos - me faltaria el controller
+//documentos
 router.post('/:uid/documents', uploader.fields([{name:'imageProfile', maxCount: 1},{name:'imageProduct', maxCount: 1},{name:'profileDocuments', maxCount: 1}]), uploadFiles)
 
 module.exports = router
