@@ -1,6 +1,8 @@
 const { Router } = require('express');
 const UserController = require('../../controllers/user.controller');
 const uploader = require('../../middlewars/multer');
+const { passsportCall } = require('../../utils/passportCall');
+const { authorizationJwt } = require('../../middlewars/jwtPassport.middleware');
 
 const router = Router()
 
@@ -14,7 +16,7 @@ const {
     uploadFiles
 } = new UserController()
 
-router.get('/', getUsers)
+router.get('/', [passsportCall('jwt'), authorizationJwt(['ADMIN'])] , getUsers)
 
 router.get('/:email', getUserBy);
 

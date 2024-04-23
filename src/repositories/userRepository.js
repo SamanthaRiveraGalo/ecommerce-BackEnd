@@ -6,7 +6,14 @@ class UserRepository {
         this.dao = dao
     }
 
-    getUsers = async () => await this.dao.getUsers()
+    getUsers = async () => {
+        //    const users =  await this.dao.getUsers()
+        //    const filterAdmin = users.filter(user => user.role !== "admin") //traigo todos menos al admin
+        //    const usersDto = filterAdmin.map(user =>new UserDto(user))
+        //    return usersDto
+        const users = await this.dao.getUsers()
+        return users.map((user) => new UserDto(user))
+    }
 
     getUserBy = async (filter) => await this.dao.getUserBy(filter)
 

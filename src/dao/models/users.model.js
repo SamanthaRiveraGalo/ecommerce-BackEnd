@@ -4,6 +4,8 @@ const userCollection = 'users'
 
 const UserSchema = Schema({
 
+    fullname: String,
+
     first_name: {
         type: String,
         required: true
