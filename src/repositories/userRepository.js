@@ -12,7 +12,8 @@ class UserRepository {
         //    const usersDto = filterAdmin.map(user =>new UserDto(user))
         //    return usersDto
         const users = await this.dao.getUsers()
-        return users.map((user) => new UserDto(user))
+        // return users.map((user) => new UserDto(user))
+        return users
     }
 
     getUserBy = async (filter) => await this.dao.getUserBy(filter)

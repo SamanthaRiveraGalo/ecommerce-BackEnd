@@ -13,7 +13,8 @@ const {
     updateUser,
     deleteUser,
     changeRole,
-    uploadFiles
+    uploadFiles,
+    deleteInactiveUser
 } = new UserController()
 
 router.get('/', [passsportCall('jwt'), authorizationJwt(['ADMIN'])] , getUsers)
@@ -31,5 +32,7 @@ router.get('/premium/:uid', changeRole)
 
 //documentos
 router.post('/:uid/documents', uploader.fields([{name:'imageProfile', maxCount: 1},{name:'imageProduct', maxCount: 1},{name:'profileDocuments', maxCount: 1}]), uploadFiles)
+
+router.delete('/', deleteInactiveUser)
 
 module.exports = router

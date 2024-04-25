@@ -1,7 +1,9 @@
+const { configObject } = require("../config/index.js")
 const { usersService } = require("../repositories/index.js")
 const { CustomError } = require("../services/customError.js")
 const { EErrors } = require("../services/enum.js")
 const { generateUserErrorInfo } = require("../services/info.js")
+const nodemailer = require('nodemailer')
 
 
 class UserController {
@@ -99,7 +101,7 @@ class UserController {
                 const newRole = 'premium'
                 await this.userServiceMongo.updateUser(uid, { role: newRole })
 
-                return res.status(200).json({ message: `Usuario ${user.first_name} ${user.last_name} ahora tiene el rol de ${newRole}`})
+                return res.status(200).json({ message: `Usuario ${user.first_name} ${user.last_name} ahora tiene el rol de ${newRole}` })
             }
 
             if (user.role === 'premium') {
@@ -107,10 +109,10 @@ class UserController {
                 user.role = 'user'
                 await this.userServiceMongo.updateUser(uid, { role: user.role })
 
-                return res.status(200).json({ message: `Usuario ${user.first_name} ${user.last_name} ahora tiene el rol de ${user.role}`})
-            } 
-                
-            return res.status(200).json({ message: `El usuario ya tiene el rol correcto: ${user.role}`})
+                return res.status(200).json({ message: `Usuario ${user.first_name} ${user.last_name} ahora tiene el rol de ${user.role}` })
+            }
+
+            return res.status(200).json({ message: `El usuario ya tiene el rol correcto: ${user.role}` })
 
         } catch (error) {
             console.log(error)
@@ -150,6 +152,68 @@ class UserController {
         } catch (error) {
             res.status(400).json({ message: 'Error al subir archivos' })
         }
+    }
+
+    deleteInactiveUser = async (req, res) => {
+        try {
+
+            const users = await this.userServiceMongo.getUsers()
+            let deletedUsers = 0
+
+            users.forEach(async user => {
+
+                if (user.last_connection) {
+
+                    console.log('entra aca',user.last_connection)// me da undefine
+
+                    const twoDaysAgo = new Date(Date.now() - 1 * 60 * 1000)
+                    // const twoDaysAgo = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000)// dos dias
+
+                    if (twoDaysAgo < 2 && user.role !== 'admin') {
+                        deletedUsers++
+                        await this.userServiceMongo.deleteUser(user._id)
+                        console.log("Usuario eliminado.")
+
+                        const transport = nodemailer.createTransport({
+                            service: 'gmail',
+                            port: 587,
+                            auth: {
+                                user: configObject.gmail_user_app,
+                                pass: configObject.gmail_pass_app
+                            }
+                        })
+
+                        const mailOptions = {
+                            from: 'Este mail lo envia <riveragalosamantha@gmail.com>',
+                            to: user.email,
+                            subject: 'Cuenta eliminada por inactividad',
+                            html: `<p>Hola ${user.first_name},</p>
+                                   <p>Lamentablemente tu cuenta ha sido eliminada de nuestra plataforma debido a inactividad.</p>
+                                   <p>Si deseas volver a utilizar nuestros servicios, por favor regístrate nuevamente en <a href="http://localhost:8080/api/sessions/register">CLICK HERE</a></p>
+                                `,
+                        }
+
+                        transport.sendMail(mailOptions, (error, info) => {
+                            if (error) {
+                                console.error('Error al enviar correo electrónico:', error);
+                                return res.status(500).json({ error: 'Error al enviar correo electrónico' });
+                            }
+
+                            console.log('Correo electrónico enviado:', info.response)
+                            return res.status(200).json({ message: 'Correo electrónico de restablecimiento enviado' })
+                        })
+
+                        res.status(200).json({ message: "Success", payload: `Usuarios eliminados: ${deletedUsers}` })
+                    }
+                }
+
+            })
+
+        } catch (error) {
+            res.status(400).json({ message: 'Error al eliminar usuarios inactivos' })
+        }
+
+
     }
 }
 

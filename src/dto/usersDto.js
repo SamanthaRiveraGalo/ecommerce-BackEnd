@@ -6,7 +6,8 @@ class UserDto {
         this.email = newUser.email
         this.role = newUser.role
         this.password = newUser.password
-        this.fullname = `${newUser.first_name} ${newUser.last_name}`
+        this.fullname = `${newUser.first_name} ${newUser.last_name}`,
+        this.last_connection = newUser.last_connection
     }
 
 }
