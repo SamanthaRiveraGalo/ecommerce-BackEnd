@@ -10,6 +10,14 @@ class User {
         return await this.model.find()
     }
 
+    async findInactiveUsers(timeLimit) {
+        try {
+          return await userModel.find({ lastConnection: { $lt: timeLimit } }).lean()
+        } catch (error) {
+          throw new Error('Error finding inactive users')
+        }
+    }
+
     async getUserBy(filter) {
         return await this.model.findOne(filter)
     }

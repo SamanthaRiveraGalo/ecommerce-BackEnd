@@ -1,4 +1,5 @@
 const { configObject } = require("../config/index.js")
+const userModel = require("../dao/models/users.model.js")
 const { usersService } = require("../repositories/index.js")
 const { CustomError } = require("../services/customError.js")
 const { EErrors } = require("../services/enum.js")
@@ -6,10 +7,12 @@ const { generateUserErrorInfo } = require("../services/info.js")
 const nodemailer = require('nodemailer')
 
 
+
 class UserController {
 
     constructor() {
         this.userServiceMongo = usersService
+        this.usermodel = userModel
     }
 
     getUsers = async (req, res) => {
@@ -155,65 +158,63 @@ class UserController {
     }
 
     deleteInactiveUser = async (req, res) => {
+
+        const twoDaysAgo = new Date()
+        twoDaysAgo.setMinutes(twoDaysAgo.getMinutes() - 1)
+
         try {
+            const adminEmail = configObject.user_admin
 
-            const users = await this.userServiceMongo.getUsers()
-            let deletedUsers = 0
+            const users = await this.usermodel.find({ last_connection: { $lt: twoDaysAgo }, email: { $ne: adminEmail } })
+            console.log('usuario encontrados',users)
 
-            users.forEach(async user => {
+            if (users.length === 0) {
+                return res.status(404).json({ error: 'No se encontraron usuarios para eliminar.' })
+            }
 
-                if (user.last_connection) {
+            const emailAddresses = users.map(user => user.email)
+            console.log('email del usuario a eliminar', emailAddresses)
 
-                    console.log('entra aca',user.last_connection)// me da undefine
-
-                    const twoDaysAgo = new Date(Date.now() - 1 * 60 * 1000)
-                    // const twoDaysAgo = new Date(Date.now() - 2 * 24 * 60 * 60 * 1000)// dos dias
-
-                    if (twoDaysAgo < 2 && user.role !== 'admin') {
-                        deletedUsers++
-                        await this.userServiceMongo.deleteUser(user._id)
-                        console.log("Usuario eliminado.")
-
-                        const transport = nodemailer.createTransport({
-                            service: 'gmail',
-                            port: 587,
-                            auth: {
-                                user: configObject.gmail_user_app,
-                                pass: configObject.gmail_pass_app
-                            }
-                        })
-
-                        const mailOptions = {
-                            from: 'Este mail lo envia <riveragalosamantha@gmail.com>',
-                            to: user.email,
-                            subject: 'Cuenta eliminada por inactividad',
-                            html: `<p>Hola ${user.first_name},</p>
-                                   <p>Lamentablemente tu cuenta ha sido eliminada de nuestra plataforma debido a inactividad.</p>
-                                   <p>Si deseas volver a utilizar nuestros servicios, por favor regístrate nuevamente en <a href="http://localhost:8080/api/sessions/register">CLICK HERE</a></p>
-                                `,
-                        }
-
-                        transport.sendMail(mailOptions, (error, info) => {
-                            if (error) {
-                                console.error('Error al enviar correo electrónico:', error);
-                                return res.status(500).json({ error: 'Error al enviar correo electrónico' });
-                            }
-
-                            console.log('Correo electrónico enviado:', info.response)
-                            return res.status(200).json({ message: 'Correo electrónico de restablecimiento enviado' })
-                        })
-
-                        res.status(200).json({ message: "Success", payload: `Usuarios eliminados: ${deletedUsers}` })
-                    }
+            const transport = nodemailer.createTransport({
+                service: 'gmail',
+                port: 587,
+                auth: {
+                    user: configObject.gmail_user_app,
+                    pass: configObject.gmail_pass_app
                 }
-
             })
 
+            const mailOptions = {
+                from: 'Este mail lo envia <riveragalosamantha@gmail.com>',
+                subject: 'Cuenta eliminada por inactividad',
+                html: `
+                      <p>Lamentablemente tu cuenta ha sido eliminada de nuestra plataforma debido a inactividad.</p>
+                      <p>Si deseas volver a utilizar nuestros servicios, por favor regístrate nuevamente en <a href="http://localhost:8080/views/register">CLICK HERE</a></p>`
+            }
+
+            const emailResults = []
+            for (const emailAddress of emailAddresses) {
+                mailOptions.to = emailAddress
+                try {
+                    const result = await transport.sendMail(mailOptions)
+                    emailResults.push({ email: emailAddress, status: 'success' })
+                    console.log(`Correo electrónico enviado a: ${emailAddress}`)
+                } catch (error) {
+                    console.error(`Error al enviar correo electrónico a: ${emailAddress}`, error)
+                    emailResults.push({ email: emailAddress, error: error.message })
+                }
+            }
+
+            const deletionResult = await this.usermodel.deleteMany({ last_connection: { $lt: twoDaysAgo }, email: { $ne: adminEmail } })
+
+            const response = {message: 'Usuarios eliminados exitosamente.', deletedCount: deletionResult.deletedCount, emailResults: emailResults}
+
+            res.status(200).json(response)
+
         } catch (error) {
-            res.status(400).json({ message: 'Error al eliminar usuarios inactivos' })
+            console.error('Error al eliminar usuarios inactivos:', error)
+            res.status(500).json({ error: 'Error interno del servidor' })
         }
-
-
     }
 }
 

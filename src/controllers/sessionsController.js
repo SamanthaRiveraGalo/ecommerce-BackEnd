@@ -69,7 +69,7 @@ class SessionsController {
             }
 
             user.last_connection = new Date()
-            await userManager.updateUser(user)
+            await userManager.updateUser(user._id, user)
             console.log(`La fecha de ingreso del usuario ${user.email} es ${user.last_connection}`)
 
             const token = createToken({ id: user._id, role: user.role })
