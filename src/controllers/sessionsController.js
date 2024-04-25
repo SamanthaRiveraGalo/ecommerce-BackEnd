@@ -1,3 +1,4 @@
+const CartDaoMongo = require("../dao/managerMongo/cartManagerMongo");
 const User = require("../dao/managerMongo/userMongoManager");
 const { isValidPassword, createHash } = require("../utils/hashPassword");
 const { createToken } = require("../utils/jwt");
@@ -7,6 +8,7 @@ const userManager = new User()
 
 class SessionsController {
     constructor() {
+        this.cartService = new CartDaoMongo()
     }
 
     signUp = async (req, res) => {
@@ -24,12 +26,18 @@ class SessionsController {
                 return res.send({ status: 'error', error: 'El email ya se encuentra registrado' })
             }
 
+            const cart = await this.cartService.createCart()
+            console.log('id del carrito creado',cart._id)
+
             const newUser = {
                 first_name,
                 last_name,
                 email,
-                password: createHash(password)
+                password: createHash(password),
+                cart: cart._id
             }
+
+            console.log('id del carrito al nuevo usuer:', newUser.cart)
 
             const result = await userManager.createUser(newUser)
 

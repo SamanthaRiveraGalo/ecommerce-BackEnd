@@ -161,6 +161,7 @@ class UserController {
 
         const twoDaysAgo = new Date()
         twoDaysAgo.setMinutes(twoDaysAgo.getMinutes() - 1)
+        // twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
 
         try {
             const adminEmail = configObject.user_admin

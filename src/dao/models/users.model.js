@@ -30,10 +30,10 @@ const UserSchema = Schema({
         required: true, 
     },
 
-    cart: [{
+    cart: {
         type: Schema.Types.ObjectId,
         ref: 'carts'
-    }],
+    },
 
     documents: [{
         name: String,
