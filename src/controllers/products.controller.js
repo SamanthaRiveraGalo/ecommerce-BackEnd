@@ -3,6 +3,7 @@ const { CustomError } = require("../services/customError.js");
 const { EErrors } = require("../services/enum.js");
 const { createProductErrorInfo } = require("../services/info");
 const { logger } = require("../utils/logger.js");
+const { sendMail } = require("../utils/sendMail.js");
 
 class ProductController {
 
@@ -15,13 +16,13 @@ class ProductController {
 
         try {
 
-            const limit = req.query.limit;
-            const page = req.query.page;
-            const query = req.query;
+            const limit = req.query.limit
+            const page = req.query.page
+            const query = req.query
 
             const products = await this.productServiceMongo.getProducts(limit, page, query)
 
-            res.status(200).send({ status: "Success", payload: products });
+            res.status(200).send({ status: "Success", payload: products })
 
 
         } catch (error) {
@@ -34,14 +35,14 @@ class ProductController {
 
         try {
 
-            const pid = req.params.pid;
+            const pid = req.params.pid
             const product = await this.productServiceMongo.getProductById(pid)
 
             if (!product) {
-                return res.status(404).send({ status: "Error", error: "producto para id no encontrado", });
+                return res.status(404).send({ status: "Error", error: "producto para id no encontrado", })
             }
 
-            return res.status(200).send({ status: "Success", payload: product });
+            return res.status(200).send({ status: "Success", payload: product })
 
         } catch (error) {
             req.logger.error(error)
@@ -78,7 +79,7 @@ class ProductController {
                 stock,
                 thumbnail,
                 category,
-                owner: user.email, //entonces me va a aparecer ahora el mail del usuario premium
+                owner: user.email,
             };
 
             console.log('producto con owner:', newProduct)
@@ -125,21 +126,35 @@ class ProductController {
     deleteProduct = async (req, res) => {
         try {
 
-            const pid = req.params.pid;
+            const pid = req.params.pid
             const user = req.user
 
             const product = await this.productServiceMongo.getProductById(pid)
-            console.log(product)//null
 
             if (user.role === 'admin' || user.email === product.owner) {
+                if (user.email === product.owner) {
+                    try {
+                        const htmlContent = `
+                            <p>Hola ${product.owner},</p>
+                            <p>Le informamos que su producto "${product.title}" ha sido eliminado de nuestra plataforma.</p>
+                            <p>Si tiene alguna pregunta o inquietud, no dude en contactarnos.</p>
+                        `
+                        await sendMail(product.owner, 'Producto eliminado', htmlContent)
+                        console.log(`Correo electrónico enviado a: ${product.owner}`)
+                    } catch (error) {
+                        req.logger.error(error)
+                        console.log(`Error al enviar correo electrónico: ${error.message}`)
+                    }
+                }
+
                 const response = await this.productServiceMongo.deleteProduct(pid)
-                res.status(200).send({ message: 'Producto eliminado', response });
-                
+                res.status(200).send({ message: 'Producto eliminado', response })
+
             } else {
-                return res.status(403).send({ status: "Error", error: 'No tienes permiso para eliminar este producto' });
+                return res.status(403).send({ status: "Error", error: 'No tienes permiso para eliminar este producto' })
             }
 
-            return res.status(404).send({ status: "Error", error: "producto para eliminar no encontrado", });
+            return res.status(404).send({ status: "Error", error: "producto para eliminar no encontrado", })
 
         } catch (error) {
             req.logger.error(error)

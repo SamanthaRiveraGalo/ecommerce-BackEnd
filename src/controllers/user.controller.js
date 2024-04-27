@@ -5,6 +5,7 @@ const { CustomError } = require("../services/customError.js")
 const { EErrors } = require("../services/enum.js")
 const { generateUserErrorInfo } = require("../services/info.js")
 const nodemailer = require('nodemailer')
+const { sendMail } = require("../utils/sendMail.js")
 
 
 
@@ -160,55 +161,37 @@ class UserController {
     deleteInactiveUser = async (req, res) => {
 
         const twoDaysAgo = new Date()
-        twoDaysAgo.setMinutes(twoDaysAgo.getMinutes() - 1)
-        // twoDaysAgo.setDate(twoDaysAgo.getDate() - 2)
-
+        twoDaysAgo.setMinutes(twoDaysAgo.getMinutes() - 1) // min
+        // twoDaysAgo.setDate(twoDaysAgo.getDate() - 2) // 2 dias!!!
         try {
             const adminEmail = configObject.user_admin
 
             const users = await this.usermodel.find({ last_connection: { $lt: twoDaysAgo }, email: { $ne: adminEmail } })
-            console.log('usuario encontrados',users)
 
             if (users.length === 0) {
                 return res.status(404).json({ error: 'No se encontraron usuarios para eliminar.' })
             }
 
             const emailAddresses = users.map(user => user.email)
-            console.log('email del usuario a eliminar', emailAddresses)
 
-            const transport = nodemailer.createTransport({
-                service: 'gmail',
-                port: 587,
-                auth: {
-                    user: configObject.gmail_user_app,
-                    pass: configObject.gmail_pass_app
-                }
-            })
-
-            const mailOptions = {
-                from: 'Este mail lo envia <riveragalosamantha@gmail.com>',
-                subject: 'Cuenta eliminada por inactividad',
-                html: `
+            const htmlContent =  `
                       <p>Lamentablemente tu cuenta ha sido eliminada de nuestra plataforma debido a inactividad.</p>
-                      <p>Si deseas volver a utilizar nuestros servicios, por favor regístrate nuevamente en <a href="http://localhost:8080/views/register">CLICK HERE</a></p>`
-            }
+                      <p>Si deseas volver a utilizar nuestros servicios, por favor regístrate nuevamente en <a href="http://localhost:8080/views/register">CLICK HERE</a></p>
+                      `
 
             const emailResults = []
             for (const emailAddress of emailAddresses) {
-                mailOptions.to = emailAddress
                 try {
-                    const result = await transport.sendMail(mailOptions)
+                    await sendMail(emailAddress, 'Cuenta eliminada por inactividad', htmlContent)
                     emailResults.push({ email: emailAddress, status: 'success' })
-                    console.log(`Correo electrónico enviado a: ${emailAddress}`)
                 } catch (error) {
-                    console.error(`Error al enviar correo electrónico a: ${emailAddress}`, error)
                     emailResults.push({ email: emailAddress, error: error.message })
                 }
             }
 
             const deletionResult = await this.usermodel.deleteMany({ last_connection: { $lt: twoDaysAgo }, email: { $ne: adminEmail } })
 
-            const response = {message: 'Usuarios eliminados exitosamente.', deletedCount: deletionResult.deletedCount, emailResults: emailResults}
+            const response = { message: 'Usuarios eliminados exitosamente.', deletedCount: deletionResult.deletedCount, emailResults: emailResults }
 
             res.status(200).json(response)
 

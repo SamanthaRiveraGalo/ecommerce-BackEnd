@@ -20,7 +20,6 @@ class PasswordController {
                 return res.status(404).json({ status: 'error', error: 'Usuario no encontrado' })
             }
 
-            //generar el token nuevo - en una hora expira
             const newToken = jwt.sign({ email }, configObject.jwt_secret_key, { expiresIn: '1 h' })
 
             const transport = nodemailer.createTransport({
@@ -35,7 +34,7 @@ class PasswordController {
             })
 
             const mailOptions = {
-                from: 'Este mail lo envia <samirivera1808@gmail.com>',
+                from: 'Este mail lo envia <ecommerce-nike@gmail.com>',
                 to: email,
                 subject: "Restaurar contraseña",
                 html: `<h1>Recuperar la contraseña</h1>
@@ -61,15 +60,13 @@ class PasswordController {
         }
     }
 
-    //ruta para restablecer la contrasenia
-
     restorePassword = async (req, res) => {
         try {
             const newpassword = req.body.newpassword
             const { token } = req.body
 
-            console.log(newpassword)// esto me da undefine
-            //verificacion de token
+            console.log(newpassword)
+            
             const data = jwt.verify(token, configObject.jwt_secret_key)
 
             const email = data.email
@@ -93,8 +90,6 @@ class PasswordController {
 
             const result = await this.userServiceMongo.updateUser(user._id, { password: hashPassword })
             console.log(result)
-
-            // return res.status(200).json({ message: 'Contraseña actualizada correctamente' })
 
             if (result.success) {
                 res.status(200).send({
