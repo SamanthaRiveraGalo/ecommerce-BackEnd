@@ -1,28 +1,37 @@
-const botonesAgregarCarrito = document.querySelectorAll('.addProduct')
+const purchaseBtn = document.getElementById('purchase');
 
-botonesAgregarCarrito.forEach(boton => {
-  boton.addEventListener('click', async (e) => {
-    e.preventDefault()
-    const prodId = req.params.pid 
-    const cartId = req.params.cid 
+purchaseBtn.addEventListener('click', async () => {
+    const productId = purchaseBtn.dataset.productid
+    const cartId = purchaseBtn.dataset.cartid
 
     try {
-      const respuesta = await fetch(`/api/carts/${cartId}/products/${prodId}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json' 
-        },
-        body: JSON.stringify({ prodId, cartId }) // Enviar ID del producto e ID del carrito en el cuerpo de la solicitud
-      })
-
-      if (!respuesta.ok) {
-        throw new Error('Error agregando producto al carrito')
-      }
-
-      console.log('Producto agregado al carrito exitosamente')
-
+        const response = await fetch(`/api/carts/${cartId}/products/${productId}`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const response_text = await response.text()
+        if (response.ok) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Producto Agregado',
+                text: `El producto ha sido agregado al carrito exitosamente`,
+            })
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: `Hubo un error al agregar el producto al carrito.\n${response_text}`,
+            })
+        }
     } catch (error) {
-      console.error('Error agregando producto al carrito:', error)
+        console.error('Error al realizar la solicitud:', error)
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: `Hubo un error al agregar el producto al carrito: ${cartId}`,
+        })
     }
-  })
 })

@@ -24,17 +24,17 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static(__dirname + '/public'))
 // app.use(cors())
-app.use(cors({credentials: true, origin: "http://localhost:5173"}))
+app.use(cors({ credentials: true, origin: "http://localhost:5173" }))
 app.use(cookieParser(configObject.cookies_code)) //firma de la cookie
 
 app.use(session({
   store: MongoStore.create({
-      mongoUrl: configObject.mongo_url,
-      mongoOptions: {
-          useNewUrlParser: true,
-          useUnifiedTopology: true
-      },
-      ttl: 160,
+    mongoUrl: configObject.mongo_url,
+    mongoOptions: {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    },
+    ttl: 160,
   }),
   secret: configObject.mongo_secret,
   resave: true,
@@ -47,7 +47,11 @@ app.use(passport.initialize())
 
 //MOTOR DE PLANTILLA
 app.engine('hbs', handlebars.engine({
-  extname: '.hbs'
+  extname: '.hbs',
+  runtimeOptions: {
+    allowProtoPropertiesByDefault: true,
+    allowProtoMethodsByDefault: true,
+  },
 }))
 app.set('view engine', '.hbs')
 app.set('views', __dirname + '/views')
@@ -60,14 +64,14 @@ app.use(handleError)
 //SWAGGER
 
 const swaggerOptions = {
-  definition :{
+  definition: {
     openapi: '3.0.1',
-    info:{
-      title:'Documentacion',
-      descreption:'Api docs para documentacion'
+    info: {
+      title: 'Documentacion',
+      descreption: 'Api docs para documentacion'
     }
   },
-  apis:[`${__dirname}/docs/**/*.yaml`]
+  apis: [`${__dirname}/docs/**/*.yaml`]
 }
 
 const specs = swaggerJsDoc(swaggerOptions)

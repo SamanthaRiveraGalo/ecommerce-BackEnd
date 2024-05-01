@@ -59,7 +59,7 @@ class viewsController {
                 hasNextPage,
                 prevPage,
                 nextPage,
-                user: user
+                user:user
             })
 
 
@@ -74,14 +74,16 @@ class viewsController {
         try {
 
             const proId = req.params.pid
+            const user= req.user
+            console.log(user)
 
             const product = await productService.getProductById(proId)
 
             if (!product) {
-                return res.status(404).send({ status: "Error", error: "id no encontrado", });
+                return res.status(404).send({ status: "Error", error: "id no encontrado", })
             }
 
-            res.status(200).render("productDetail", product );
+            res.status(200).render("productDetail", { product , user } )
 
         } catch (error) {
             req.logger.error(error)

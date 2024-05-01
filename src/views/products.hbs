@@ -1,17 +1,17 @@
 <div class="conteiner">
   <h1 class="title">Productos</h1>
-  <h2>Bienvenido {{user.first_name}}</h2>
+  <h2>Bienvenido {{user.first_name}} {{user.last_name}}</h2>
 
   <div>
     {{#if user.cart}}
-    <p id="cart-id">Id del Carrito: {{user.cart}} </p>
-    <a href="/carts/{{user.cart}}"><button>Ir al carrito</button></a>
+    <a href="/api/carts/{{user.cart}}"><button>Ir al carrito</button></a>
     {{/if}}
   </div>
 
   <a href="/api/sessions/logout"><button>Logout</button></a>
- 
+
   <div class="row conteiner-products" style="column-gap: 1rem; row-gap: 1rem;">
+    {{#if user}}
     {{#each products}}
     <div class="col-md-4 card-product">
       <p class="name">{{this.title}}</p>
@@ -22,8 +22,9 @@
       <a href="#" class="btn btn-outline-dark product-detail-link" data-product-id="{{this._id}}">Más información</a>
     </div>
     {{/each}}
+    {{/if}}
   </div>
- 
+
 
   <div class="text-center">
     {{#if hasPrevPage}}
