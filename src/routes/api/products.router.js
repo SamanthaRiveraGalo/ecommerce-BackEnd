@@ -14,7 +14,7 @@ const {
 const router = Router();
 
 
-router.get("/", getsProducts);
+router.get("/", [passsportCall('jwt'), authorizationJwt(['ADMIN', 'USER','PREMIUM'])],getsProducts);
 
 router.get("/:pid", getProductId);
 

@@ -1,17 +1,57 @@
 <div>
-    <p>Home/Mujer/{{this.title}}</p>
     <div>
-        <div>
-            <figure>
-                <img src="{{this.thumbnail}}" alt="">
-            </figure>
-        </div>
-        <div>
-            <h1>{{this.title}}</h1>
-            <strong><p>${{this.price}}</p></strong>
-            <p>{{this.description}}</p>
-            <p>{{this.stock}}</p>
-            <button class="btn btn-outline-dark">Agregar al carrito</button>
-        </div>
+        <label id="cart_id">{{this.cart}}</label>
+        <label id="user_role">{{this.role}}</label>
     </div>
 </div>
+<p><a href="/views/products">Home</a>/{{this.category}}/{{this.title}}</p>
+<div>
+    <div>
+        <figure>
+            <img src="{{this.thumbnail}}" alt="img del producto">
+        </figure>
+    </div>
+    <div>
+        <h1>{{this.title}}</h1>
+        <strong>
+            <p>${{this.price}}</p>
+        </strong>
+        <p>{{this.description}}</p>
+        <p>{{this.stock}}</p>
+       <form action="/api/carts/{{this.cart}}/products/{{this._id}}" method="POST">
+              <button type="submit" class="btn btn-outline-dark">Agregar a carrito</button>
+        </form>
+
+    </div>
+</div>
+</div>
+
+<script>
+
+    function addToCart(pid) {
+        const cid = document.getElementById('cart_id').innerHTML
+        if (!cid) {
+            console.error("Cart ID not found. Please ensure you have an active cart.");
+            return;
+        }
+
+        fetch(`/api/carts/${cid}/products/${pid}`, {
+            method: 'post'
+        })
+            .then(result => result.json())
+            .then(result => {
+                if (result.status === 'error') {
+                    console.error("Error adding product to cart:", result.error);
+
+                    return;
+                }
+
+                console.log("Product successfully added to cart!");
+
+            })
+            .catch(error => {
+                console.error("An unexpected error occurred:", error)
+
+            })
+    }
+</script>

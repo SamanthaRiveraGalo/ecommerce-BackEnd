@@ -1,5 +1,6 @@
 const CartDaoMongo = require("../dao/managerMongo/cartManagerMongo")
 const ProductDaoMongo = require("../dao/managerMongo/productManagerMongo")
+const { usersService } = require("../repositories")
 
 const productService = new ProductDaoMongo()
 const cartService = new CartDaoMongo()
@@ -41,6 +42,7 @@ class viewsController {
             const { page = 1 } = req.query;
             const limit = req.query.limit;
             const query = req.query;
+            const user = req.user
 
             const {
                 payload: products,
@@ -57,7 +59,8 @@ class viewsController {
                 hasNextPage,
                 prevPage,
                 nextPage,
-            });
+                user: user
+            })
 
 
         } catch (error) {
@@ -70,16 +73,15 @@ class viewsController {
 
         try {
 
-            const proId = req.params.pid;
+            const proId = req.params.pid
 
             const product = await productService.getProductById(proId)
-
 
             if (!product) {
                 return res.status(404).send({ status: "Error", error: "id no encontrado", });
             }
 
-            res.status(200).render("productDetail", product);
+            res.status(200).render("productDetail", product );
 
         } catch (error) {
             req.logger.error(error)

@@ -2,6 +2,9 @@ const { Router } = require('express')
 
 const viewsController = require('../controllers/viewsController')
 const { publicAccess, privateAccess } = require('../middlewars/auth.middlewars')
+const { passsportCall } = require('../utils/passportCall')
+const { authorizationJwt } = require('../middlewars/jwtPassport.middleware')
+
 
 const router = Router()
 
@@ -32,11 +35,11 @@ router.get("/realtimeproducts", realTimeProducts);
 
 //VISTA DE PRODUCTOS
 
-router.get('/products', products)
+router.get('/products', [passsportCall('jwt'), authorizationJwt(['ADMIN', 'USER', 'PREMIUN'])] ,products)
 
 //DETALLE DE UN PRODUCTO
 
-router.get('/products/:pid', productId)
+router.get('/products/:pid', [passsportCall('jwt'), authorizationJwt(['ADMIN', 'USER', 'PREMIUN'])],productId)
 
 //VISTA DEL CARRITO
 
