@@ -1,9 +1,11 @@
 const cartModel = require("../models/carts.model")
+const productModel = require("../models/product.model")
 
 // aca debe haber algun error por que no me los metodos
 class CartDaoMongo {
     constructor() {
         this.model = cartModel
+        this.productModel = productModel
     }
 
     async getCarts() {
@@ -58,17 +60,29 @@ class CartDaoMongo {
 
     }
 
-    async updateQuantity(cid, pid, quantity) {
-
+    async updateQuantity(cartId, productId, newQuantity) {
         try {
+            const cart = await this.model.findOne({ _id: cartId })
 
-            const cart = await this.model.updateOne(
-                { _id: cid, "products._id": pid },
-                { $inc: { "products.$.quantity": quantity } }
+            if (!cart) {
+                return { success: false }
+            }
+
+            const productIndex = cart.products.findIndex(
+                (item) => item._id.toString() === productId
             )
 
-            return { success: 'succes', payload: cart }
-        } catch (error) {
+            if (productIndex !== -1) {
+                cart.products[productIndex].quantity = newQuantity
+
+                await cart.save()
+
+                return { success: true }
+            } else {
+                return { success: false }
+            }
+        }
+        catch (error) {
             req.logger.error(error)
         }
     }
@@ -79,7 +93,7 @@ class CartDaoMongo {
             const cart = await this.model.findOne({ _id: cid });
 
             if (!cart) {
-                req.logger.error('no se encontro el carrito/manager',error)
+                req.logger.error('no se encontro el carrito/manager', error)
             }
 
 

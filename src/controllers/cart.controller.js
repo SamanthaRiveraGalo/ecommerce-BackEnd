@@ -119,20 +119,25 @@ class CartController {
 
     quantityUpdate = async (req, res) => {
         try {
-            const cartId = req.params.cid;
-            const prodId = req.params.pid;
-            const quantity = req.body.quantity;
-
-            const updateCart = await this.cartService.updateQuantity(cartId, prodId, quantity)
-
-            return res.status(200).send({
-                status: "Success",
-                payload: updateCart,
-            });
-
-
+            const { cid, pid } = req.params
+            const { quantity } = req.body
+        
+            const result = await this.cartService.updateQuantity(cid, pid, quantity)
+        
+            if (result.success) {
+                res.json({
+                    status: 'success',
+                    message: 'Cantidad modificada',
+                })
+            } else {
+                res.status(404).json({
+                    status: 'error',
+                    message: 'Carrito o producto no encontrado',
+                })
+            }
         } catch (error) {
             req.logger.error(error)
+            res.status(500).send('Server error')
         }
     }
 

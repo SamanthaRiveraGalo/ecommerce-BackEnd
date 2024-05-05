@@ -2,15 +2,41 @@
     color: aqua;
 }
 
+.conteiner {
+    display: flex;
+    flex-direction: column;
+}
+
+.conteiner-navbar {
+    display: flex;
+    justify-content: space-between;
+    background-color: #181818;
+    color: #fff;
+    padding: 1.5rem 0.5rem;
+}
+
+.welcome {
+    font-size: 25px;
+}
+
+.section {
+    padding: 1rem;
+}
+
+p>a {
+    text-decoration: none;
+    color: black;
+}
+
 .conteiner-products {
-    margin: 1rem ;
+    margin: 1rem;
     padding: 2rem 3rem;
     display: flex;
     justify-content: center;
 }
 
 .card-product {
-    border-radius: 10px ;
+    border-radius: 10px;
     padding: 0.6rem 0;
     background-color: #FFFDF9;
     box-shadow: 1px 1px 4px 2px #D8D8D8;
@@ -30,12 +56,15 @@ img {
 }
 
 /* LOGIN */
-.conteiner{
+.conteiner-login,
+.conteiner-register {
     display: flex;
     justify-content: center;
     padding: 3rem;
 }
-.conteiner-login, .conteiner-register{
+
+.section-login,
+.section-register {
     width: 60%;
     border: 1px solid black;
     border-radius: 10px;
@@ -45,28 +74,95 @@ img {
     column-gap: 2rem;
 }
 
-.conteiner-img{
+.conteiner-img {
     width: 20rem;
 }
 
-.nike-logo{
+.nike-logo {
     width: 100%;
 }
 
-.conteiner-form, #loginForm, #registerForm{
+.conteiner-form,
+#loginForm,
+#registerForm {
     display: flex;
     flex-direction: column;
     row-gap: 1rem;
 }
 
-p > a{
+p>a {
 
     text-decoration: none;
 }
 
-/* Register */
+/* footer */
+.footer {
+    background-color: #181818;
+    color: #fff;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(1fr, 100px);
+    padding: 2rem 2rem 0 2rem;
+    font: 20px;
+}
 
+.footer-body {
+    grid-area: 1 / 1 / 2 / 5;
+    display: flex;
+    justify-content: space-between;
+}
 
+.footer-pie {
+    grid-area: 2 / 1 / 3 / 5;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 3rem;
+}
 
+.footer-ubicacion {
+    display: flex;
+    gap: 1.5rem;
+}
 
+.footer-title-ayuda,
+.footer-title-acerca,
+.footer-title-redes {
+    font-weight: bolder;
+    font-size: 23px;
+}
 
+/* carrito */
+
+.total-price{
+    display: flex;
+    justify-content: end;
+    font-weight: bold;
+    font-size: 20px;
+    padding-top: 1rem;
+}
+
+.buy{
+    display: flex;
+    justify-content: end;
+    padding-top: 1rem;
+}
+
+.deleteProductCart{
+    border-bottom: none;
+    padding: 0 ;
+}
+
+.quantity{
+    display: flex;
+    gap: 0.5rem;
+}
+
+.quantity > p{
+    align-items: center;
+    display: flex;
+    margin: 0;
+}
+
+.home{
+    color: #fff;
+}

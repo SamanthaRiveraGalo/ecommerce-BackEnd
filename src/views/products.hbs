@@ -1,42 +1,86 @@
-<div class="conteiner">
-  <h1 class="title">Productos</h1>
-  <h2>Bienvenido {{user.first_name}} {{user.last_name}}</h2>
+<body class="conteiner">
+  <nav class="conteiner-navbar">
+    <h2 class="welcome">Bienvenido, {{user.first_name}} {{user.last_name}}</h2>
 
-  <div>
-    {{#if user.cart}}
-    <a href="/api/carts/{{user.cart}}"><button>Ir al carrito</button></a>
-    {{/if}}
-  </div>
-
-  <a href="/api/sessions/logout"><button>Logout</button></a>
-
-  <div class="row conteiner-products" style="column-gap: 1rem; row-gap: 1rem;">
-    {{#if user}}
-    {{#each products}}
-    <div class="col-md-4 card-product">
-      <p class="name">{{this.title}}</p>
-      <figure>
-        <img src="{{this.thumbnail}}" alt="">
-      </figure>
-      <p class="price">{{this.price}}</p>
-      <a href="#" class="btn btn-outline-dark product-detail-link" data-product-id="{{this._id}}">Más información</a>
+    <div>
+      {{#if user.cart}}
+      <a href="/views/cart/{{user.cart}}"><button class="btn btn-outline-light">Carrito</button></a>
+      {{/if}}
+      <a href="/api/sessions/logout"><button class="logout btn btn-outline-light">Logout</button></a>
     </div>
-    {{/each}}
-    {{/if}}
-  </div>
+  </nav>
 
+  <section class="section">
 
-  <div class="text-center">
-    {{#if hasPrevPage}}
-    <a href="?page={{prevPage}}" class="btn btn-outline-dark">Anterior</a>
-    {{/if}}
+    <div class="title-products">
+      <h1 class="title">Productos</h1>
+    </div>
 
-    <label for="">{{page}}</label>
+    <div class="row conteiner-products" style="column-gap: 1rem; row-gap: 1rem;">
+      {{#if user}}
+      {{#each products}}
+      <div class="col-md-4 card-product">
+        <p class="name">{{this.title}}</p>
+        <figure>
+          <img src="{{this.thumbnail}}" alt="">
+        </figure>
+        <p class="price">{{this.price}}</p>
+        <a href="#" class="btn btn-outline-dark product-detail-link" data-product-id="{{this._id}}">Más información</a>
+      </div>
+      {{/each}}
+      {{/if}}
+    </div>
 
-    {{#if hasNextPage}}
-    <a href="?page={{nextPage}}" class="btn btn-outline-dark">Siguiente</a>
-    {{/if}}
-  </div>
-</div>
+    <div class="text-center">
+      {{#if hasPrevPage}}
+      <a href="?page={{prevPage}}" class="btn btn-outline-dark">Anterior</a>
+      {{/if}}
+
+      <label for="">{{page}}</label>
+
+      {{#if hasNextPage}}
+      <a href="?page={{nextPage}}" class="btn btn-outline-dark">Siguiente</a>
+      {{/if}}
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class='footer-body'>
+      <figure>
+        <img src="/assets/nike-jordan.svg" alt="imagen logo" />
+      </figure>
+
+      <div class='footer-ayuda'>
+        <p class='footer-title-ayuda'>Ayuda</p>
+        <p>Envios y entregas</p>
+        <p>Devoluciones</p>
+        <p>Cambios</p>
+        <p>Autogestionar mi devolucion</p>
+        <p>Opciones de pago</p>
+        <p>Contactate</p>
+      </div>
+      <div class='footer-acerca'>
+        <p class='footer-title-acerca'>Acerca de Nike</p>
+        <p>Noticias</p>
+        <p>Inversinistas</p>
+        <p>Sustentabilidad</p>
+      </div>
+      <div class='footer-redes'>
+        <p class='footer-title-redes'>Redes Sociales</p>
+        <p>Instagram</p>
+        <p>Facebook</p>
+        <p>Twitter</p>
+        <p>Youtube</p>
+      </div>
+    </div>
+    <div class='footer-pie'>
+      <div class='footer-ubicacion'>
+        <p>Argentina</p>
+      </div>
+      <div class='footer-terminos'>Terminos y condiciones</div>
+    </div>
+  </footer>
+
+</body>
 
 <script src="/js/product.js"></script>

@@ -1,29 +1,78 @@
-<div>
-    <div>
-        <label id="user_role">{{user.role}}</label>
-        <p>{{user.cart}}</p>
-    </div>
-</div>
-<p><a href="/views/products">Home</a>/{{product.category}}/{{product.title}}</p>
-<div>
-    <div>
-        <figure>
-            <img src="{{product.thumbnail}}" alt="img del producto">
-        </figure>
-    </div>
-    <div>
-        <h1>{{product.title}}</h1>
-        <p>${{product.price}}</p>
-        <p>{{product.description}}</p>
-        <p>{{product.stock}}</p>
-        {{!-- <form action="/api/carts/{{user.cart}}/products/{{product._id}}" method="POST">
-            <button type="submit" class="btn btn-outline-dark">Agregar a carrito</button>
-        </form> --}}
-        <button type="button" class="btn btn-outline-dark" id="purchase" data-productid="{{product._id}}"
-                data-cartid="{{user.cart}}">Agregar al Carrito</button>
+<main>
+    <nav class="conteiner-navbar">
+        <h2 class="welcome">Bienvenido, {{user.first_name}} {{user.last_name}}</h2>
 
-    </div>
-</div>
+        <div>
+            {{#if user.cart}}
+            <a href="/views/cart/{{user.cart}}"><button class="btn btn-outline-light">Carrito</button></a>
+            {{/if}}
+            <a href="/api/sessions/logout"><button class="logout btn btn-outline-light">Logout</button></a>
+        </div>
+    </nav>
+
+    <section class="section">
+
+        <div>
+            <p><a href="/views/products">Home</a>/{{product.category}}/{{product.title}}</p>
+        </div>
+
+        <div>
+            <div>
+                <figure>
+                    <img src="{{product.thumbnail}}" alt="img del producto">
+                </figure>
+            </div>
+            <div>
+                <h1>{{product.title}}</h1>
+                <p>${{product.price}}</p>
+                <p>{{product.description}}</p>
+                <p>Stock: {{product.stock}} unidades</p>
+                <button type="button" class="btn btn-outline-dark" id="purchase" data-productid="{{product._id}}"
+                    data-cartid="{{user.cart}}">Agregar al Carrito</button>
+
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class='footer-body'>
+            <figure>
+                <img src="/assets/nike-jordan.svg" alt="imagen logo" />
+            </figure>
+
+            <div class='footer-ayuda'>
+                <p class='footer-title-ayuda'>Ayuda</p>
+                <p>Envios y entregas</p>
+                <p>Devoluciones</p>
+                <p>Cambios</p>
+                <p>Autogestionar mi devolucion</p>
+                <p>Opciones de pago</p>
+                <p>Contactate</p>
+            </div>
+            <div class='footer-acerca'>
+                <p class='footer-title-acerca'>Acerca de Nike</p>
+                <p>Noticias</p>
+                <p>Inversinistas</p>
+                <p>Sustentabilidad</p>
+            </div>
+            <div class='footer-redes'>
+                <p class='footer-title-redes'>Redes Sociales</p>
+                <p>Instagram</p>
+                <p>Facebook</p>
+                <p>Twitter</p>
+                <p>Youtube</p>
+            </div>
+        </div>
+        <div class='footer-pie'>
+            <div class='footer-ubicacion'>
+                <p>Argentina</p>
+            </div>
+            <div class='footer-terminos'>Terminos y condiciones</div>
+        </div>
+    </footer>
+
+</main>
+
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/js/productDetail.js"></script>

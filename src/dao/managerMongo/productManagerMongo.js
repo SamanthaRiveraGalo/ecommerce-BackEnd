@@ -70,7 +70,7 @@ class ProductDaoMongo {
 
     async getProductById(pid) {
 
-        return await this.model.findOne({ _id: pid })
+        return await this.model.findOne({ _id: pid }).lean()
     }
 
     async createProduct(newProduct) {

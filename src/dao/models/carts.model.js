@@ -18,10 +18,9 @@ const cartSchema = new Schema({
                 },
             },
         ],
-        
+
         default: [],
     },
-
 
 })
 

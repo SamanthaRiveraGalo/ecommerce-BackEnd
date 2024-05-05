@@ -43,7 +43,7 @@ router.get('/products/:pid', [passsportCall('jwt'), authorizationJwt(['ADMIN', '
 
 //VISTA DEL CARRITO
 
-router.get('/cart/:cid', privateAccess, cartId)
+router.get('/cart/:cid', [passsportCall('jwt'), authorizationJwt(['USER', 'PREMIUN'])] , cartId)
 
 //VISTA DE CONTRASENIA
 

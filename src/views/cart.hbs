@@ -1,20 +1,99 @@
-<div>
-    <h1 class="title">Carrito</h1>
-    {{#each cart.products}}
-    <div class="conteiner-cart">
-        <p>{{cart._id}}</p>
-        <div>
-            <p> {{this.product.title}}</p>
-        </div>
-        <div>
-            <span>-</span>
-            <p>{{this.product.quantity}}</p>
-            <span>+</span>
-        </div>
-        <div>
-            <p>${{this.product.price}}</p>
-        </div>
-    </div>
-    {{/each}}
+<body>
+    <nav class="conteiner-navbar">
+        <p><a class="home" href="/views/products">Inicio</a></p>
+        <h2 class="welcome">Bienvenido, {{user.first_name}} {{user.last_name}}</h2>
 
-</div>
+        <div>
+            {{#if user.cart}}
+            <a href="/views/cart/{{user.cart}}"><button class="btn btn-outline-light">Carrito</button></a>
+            {{/if}}
+            <a href="/api/sessions/logout"><button class="logout btn btn-outline-light">Logout</button></a>
+        </div>
+    </nav>
+
+    <section class="section" id="contenido">
+        <h1 class="title">Carrito</h1>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Producto</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Precio</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each products}}
+                <tr>
+                    <td>{{ this._id.title }}</td>
+                    <td class="quantity">
+                        <button type="button" class="btn btn-outline-dark " title="Eliminar un producto" id="subtract"
+                            data-productid="{{this._id._id}}" current-quantity="{{quantity}}"
+                            data-cartid="{{../cid}}">-</button>
+                        <p>{{ quantity }}</p>
+                        <button type="button" class="btn btn-outline-dark " title="Agregar un producto" id="add"
+                            data-productid="{{this._id._id}}" current-quantity="{{quantity}}"
+                            data-cartid="{{../cid}}">+</button>
+                    </td>
+                    <td class="price">${{ this._id.price }}</td>
+                    <td class="deleteProductCart">
+                        <button type="button" id="deletProduct" class="delete btn btn-outline-dark"
+                            title="Eliminar Producto" data-productid="{{this._id._id}}"
+                            data-cartid="{{../cid}}">X</button>
+                    </td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+
+        <div class="total-price">
+            <p>Precio total: ${{ amountTotal }}</p>
+        </div>
+        <div class="buy">
+            <button class="btn btn-outline-dark">Comprar</button>
+        </div>
+        <div class="vaciar-carrito">
+            <button type="button" id="delete-cart" class="deleteCart btn btn-outline-dark"
+                            title="Eliminar Productos" data-cartid="{{cid}}">Vaciar carrito</button>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class='footer-body'>
+            <figure>
+                <img src="/assets/nike-jordan.svg" alt="imagen logo" />
+            </figure>
+
+            <div class='footer-ayuda'>
+                <p class='footer-title-ayuda'>Ayuda</p>
+                <p>Envios y entregas</p>
+                <p>Devoluciones</p>
+                <p>Cambios</p>
+                <p>Autogestionar mi devolucion</p>
+                <p>Opciones de pago</p>
+                <p>Contactate</p>
+            </div>
+            <div class='footer-acerca'>
+                <p class='footer-title-acerca'>Acerca de Nike</p>
+                <p>Noticias</p>
+                <p>Inversinistas</p>
+                <p>Sustentabilidad</p>
+            </div>
+            <div class='footer-redes'>
+                <p class='footer-title-redes'>Redes Sociales</p>
+                <p>Instagram</p>
+                <p>Facebook</p>
+                <p>Twitter</p>
+                <p>Youtube</p>
+            </div>
+        </div>
+        <div class='footer-pie'>
+            <div class='footer-ubicacion'>
+                <p>Argentina</p>
+            </div>
+            <div class='footer-terminos'>Terminos y condiciones</div>
+        </div>
+    </footer>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/cart.js"></script>
