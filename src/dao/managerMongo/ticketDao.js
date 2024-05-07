@@ -4,25 +4,30 @@ class TicketDao {
 
     async createTicket(totalAmount, purchaser) {
         try {
-            const ticket = new ticketModel({ amount: totalAmount, purchaser: purchaser });
-    
-            await ticket.save();
+            const ticket = new ticketModel({ amount: totalAmount, purchaser: purchaser })
+
+            await ticket.save()
 
             return ticket
-            
+
         } catch (error) {
             req.logger.info(error)
         }
 
-    };
-
-    async getTicketsUser(purchaserMail) {
-
-        const tickets = await ticketModel.find({ purchaser: purchaserMail });
-
-        return tickets;
     }
 
-};
+    async getTicketId(tid) {
+        return await ticketModel.findOne({ _id: tid })
+    }
+
+    // async getTicketsUser(purchaserMail) {
+
+    //     const tickets = await ticketModel.find({ purchaser: purchaserMail })
+    //     console.log(tickets)
+
+    //     return tickets
+    // }
+
+}
 
 module.exports = { TicketDao };

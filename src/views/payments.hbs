@@ -1,17 +1,39 @@
-<main>
+<body>
     <nav class="conteiner-navbar">
-        <p> <a class="nike" href="/views"> Nike. </a></p>
-    </nav>
-    <section class="text-center p-5">
+        <p><a class="home" href="/views/products">Inicio</a></p>
+        <h2 class="welcome">Bienvenido, {{user.first_name}} {{user.last_name}}</h2>
 
         <div>
-            <h1>Se le enviara un correo electronico con un link para recuperar su contraseña</h1>
+            {{#if user.cart}}
+            <a href="/views/cart/{{user.cart}}"><button class="btn btn-outline-light">Carrito</button></a>
+            {{/if}}
+            <a href="/api/sessions/logout"><button class="logout btn btn-outline-light">Logout</button></a>
         </div>
-        <form class="p-5" id="formPassword">
-            <input class="input-email" type="text" name="email" placeholder="Ingrese su mail">
-            <button type="submit" class="btn btn-outline-dark">Restablecer Contraseña</button>
+    </nav>
+
+    <section>
+        <h1>Datos de la tarjeta</h1>
+        <form id="payment-form">
+            <div class="card-info">
+                <label for="card-number">Número de tarjeta:</label>
+                <input type="text" id="card-number" name="card-number">
+
+                <label for="expiration-date">Fecha de vencimiento:</label>
+                <input type="month" id="expiration-date" name="expiration-date">
+
+                <label for="cvv">CVV:</label>
+                <input type="text" id="cvv" name="cvv">
+
+            </div>
+
+            <button class="btn btn-outline-dark" type="submit">Finalizar pago</button>
         </form>
+
+        </div>
+
     </section>
+
+
     <footer class="footer">
         <div class='footer-body'>
 
@@ -45,5 +67,5 @@
             <div class='footer-terminos'>Terminos y condiciones</div>
         </div>
     </footer>
-</main>
-<script src="/js/forgot.js"></script>
+
+</body>

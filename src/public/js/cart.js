@@ -100,3 +100,33 @@ document.getElementById('contenido').addEventListener('click', async function (e
     }
 
 })
+
+let btnCartPurchase = document.getElementById('payButton')
+
+btnCartPurchase.addEventListener('click', async function (e) {
+    const cartId = e.target.getAttribute('data-cartid')
+
+    try {
+
+        const response = await fetch(`/api/carts/${cartId}/purchase`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+
+        if (response.ok) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Compra realizada exitosamente!'
+            }).then(() => {
+                window.location.href = '/views/payments'
+            })
+        } else {
+            Swal.fire('Error', 'Hubo un problema al realizar la compra. Inténtelo de nuevo más tarde.', 'error')
+        }
+    } catch (error) {
+        console.error('Error during purchase:', error)
+    }
+
+})

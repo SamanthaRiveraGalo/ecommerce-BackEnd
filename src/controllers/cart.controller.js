@@ -1,9 +1,10 @@
 const CartDaoMongo = require("../dao/managerMongo/cartManagerMongo");
 const ProductDaoMongo = require("../dao/managerMongo/productManagerMongo");
-const { ticketService } = require("../repositories/index.js");
+const { ticketService, usersService } = require("../repositories/index.js");
 const { CustomError } = require("../services/customError.js");
 const { EErrors } = require("../services/enum.js");
 const { generateCartRemoveErrorInfo } = require("../services/info.js");
+const { sendMail } = require("../utils/sendMail.js");
 
 class CartController {
 
@@ -121,9 +122,9 @@ class CartController {
         try {
             const { cid, pid } = req.params
             const { quantity } = req.body
-        
+
             const result = await this.cartService.updateQuantity(cid, pid, quantity)
-        
+
             if (result.success) {
                 res.json({
                     status: 'success',
@@ -208,30 +209,27 @@ class CartController {
         const { cid } = req.params
 
         try {
-            //busco el carrito por el id
             const cart = await this.cartService.getCartById(cid)
-            // console.log(JSON.stringify(cart, null, 3));
+            // console.log(JSON.stringify(cart, null, 3))
 
             //productos que no tenemos en stock
             const unavalibleProducts = []
             let totalAmount = 0
 
-            //por cada item del carrito
             for (const item of cart.products) {
                 const productId = item._id
                 const quantity = item.quantity
 
-                const product = await this.productService.getProductById(productId); //el id del producto si lo toma
-                //cerificamos el stock y cantidad y actualizamos
+                const product = await this.productService.getProductById(productId)
+
                 if (product.stock >= quantity) {
-                    product.stock -= quantity;
-                    await product.save()
-                    // monto total
+                    product.stock -= quantity
+                    // await product.save()
+
                     totalAmount += product.price * quantity
-                    //eliminamos el product del carrito 
+
                     this.cartService.deleteProduct(cid, productId)
                 } else {
-                    //sino lo agregamos a productos no disponibles
                     unavalibleProducts.push(productId)
                 }
             }
@@ -239,9 +237,20 @@ class CartController {
             // ticket - mandamos el total y el email
             const userEmail = req.user.email
 
-            const tiket = await this.ticket.createTicket(totalAmount, userEmail)
+            const ticket = await this.ticket.createTicket(totalAmount, userEmail)
 
-            res.status(200).send({ message: 'Compra exitosa', unavalibleProducts: unavalibleProducts });
+            const subject = "Confirmación de compra"
+            const html = `
+                        <h1>¡Tu compra se ha realizado con éxito!</h1>
+                        <p>Hola ${userEmail},</p>
+                        <p>Te informamos que tu compra ha sido confirmada.</p>
+                        <p>Tu numero de ticket es: ${ticket.code}</p>
+                        <p>El monto total de la compra es: $${totalAmount}</p>
+                        <p>Gracias por confiar en nosotros!</p>
+                         `
+            await sendMail(userEmail, subject, html)
+
+            res.status(200).send({ message: 'Compra exitosa', unavalibleProducts: unavalibleProducts })
 
         } catch (error) {
             res.status(500).send(error.message)

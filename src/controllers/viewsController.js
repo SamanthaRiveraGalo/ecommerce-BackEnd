@@ -1,14 +1,14 @@
 const CartDaoMongo = require("../dao/managerMongo/cartManagerMongo")
 const ProductDaoMongo = require("../dao/managerMongo/productManagerMongo")
 const cartModel = require("../dao/models/carts.model")
-const { usersService } = require("../repositories")
+const { ticketService } = require("../repositories")
 
 const productService = new ProductDaoMongo()
-const cartService = new CartDaoMongo()
 
 class viewsController {
     constructor() {
         this.cartModel = cartModel
+        this.ticket = ticketService
     }
 
     register = (req, res) => {
@@ -23,7 +23,7 @@ class viewsController {
 
         const products = await productService.getProducts()
 
-        res.render('index', { products })
+        res.render('home', { products })
 
     }
 
@@ -55,16 +55,20 @@ class viewsController {
                 prevPage,
             } = await productService.getProducts(limit, page, query)
 
-            return res.render("products", {
-                products: products,
-                page,
-                hasPrevPage,
-                hasNextPage,
-                prevPage,
-                nextPage,
-                user: user
-            })
+            if(user){
 
+                return res.render("products", {
+                    products: products,
+                    page,
+                    hasPrevPage,
+                    hasNextPage,
+                    prevPage,
+                    nextPage,
+                    user: user
+                })
+            }
+            
+            return res.render("home")
 
         } catch (error) {
             req.logger.error(error)
@@ -101,11 +105,6 @@ class viewsController {
 
         const products = cart.products
 
-        // const totalAmount = cart.products.reduce((acc, item) => {
-        //     const productPrice = item._id.price || 0
-        //     const subtotal = productPrice * item.quantity
-        //     return acc + subtotal
-        // }, 0)
         let amountTotal = 0
         let quantityTotal = 0
 
@@ -117,6 +116,22 @@ class viewsController {
 
 
         res.status(200).render('cart', { products, amountTotal, user, cart, cid })
+    }
+
+    payments = async (req, res) => {
+        const user = req.user
+
+        res.render('paymentSucces', user)
+    }
+
+    getPago = async (req, res) => {
+
+        const cid = req.params.cid
+        const user = req.user
+
+        const cart = await this.cartModel.findById({ _id: cid })
+
+        res.render('payments', { cart, user })
     }
 }
 

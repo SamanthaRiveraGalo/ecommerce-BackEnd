@@ -4,10 +4,7 @@ const { usersService } = require("../repositories/index.js")
 const { CustomError } = require("../services/customError.js")
 const { EErrors } = require("../services/enum.js")
 const { generateUserErrorInfo } = require("../services/info.js")
-const nodemailer = require('nodemailer')
 const { sendMail } = require("../utils/sendMail.js")
-
-
 
 class UserController {
 

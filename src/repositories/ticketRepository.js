@@ -1,17 +1,21 @@
 class TicketRepository {
 
     constructor(dao) {
-        this.dao = dao;
+        this.dao = dao
     }
 
     createTicket = async (totalAmount, purchaser, code, ) => {
        return await this.dao.createTicket(totalAmount, purchaser)
     }
 
-    getTickets = async (purchaser) => {
-        let result = await this.dao.getTicketsUser(purchaser);
-        return result
+    getTicketId = async (tid)=>{
+        return await this.dao.getTicketId(tid)
     }
+
+    // getTicketsUser = async (purchaserMail) => {
+    //     let result = await this.dao.getTicketsUser(purchaserMail)
+    //     return result
+    // }
 }
 
 module.exports = { TicketRepository };

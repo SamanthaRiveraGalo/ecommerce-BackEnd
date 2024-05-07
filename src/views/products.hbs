@@ -1,12 +1,14 @@
 <body class="conteiner">
   <nav class="conteiner-navbar">
+    <p><a class="home" href="/views/products">Inicio</a></p>
     <h2 class="welcome">Bienvenido, {{user.first_name}} {{user.last_name}}</h2>
 
     <div>
+
       {{#if user.cart}}
       <a href="/views/cart/{{user.cart}}"><button class="btn btn-outline-light">Carrito</button></a>
       {{/if}}
-      <a href="/api/sessions/logout"><button class="logout btn btn-outline-light">Logout</button></a>
+      <a href="/views/login"><button class="logout btn btn-outline-light">Login</button></a>
     </div>
   </nav>
 
@@ -46,10 +48,7 @@
 
   <footer class="footer">
     <div class='footer-body'>
-      <figure>
-        <img src="/assets/nike-jordan.svg" alt="imagen logo" />
-      </figure>
-
+     
       <div class='footer-ayuda'>
         <p class='footer-title-ayuda'>Ayuda</p>
         <p>Envios y entregas</p>
@@ -80,7 +79,6 @@
       <div class='footer-terminos'>Terminos y condiciones</div>
     </div>
   </footer>
-
 </body>
 
 <script src="/js/product.js"></script>

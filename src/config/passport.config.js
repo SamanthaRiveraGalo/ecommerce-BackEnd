@@ -28,8 +28,6 @@ exports.initializePassport = () => {
     }, async (jwt_payload, done)=>{
         try {
 
-            console.log('jwtpayload passport config:', jwt_payload)
-
             const userId = jwt_payload.id
 
             const user = await userService.getUserBy({_id: userId})

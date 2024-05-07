@@ -1,20 +1,22 @@
-<main>
+<body>
     <nav class="conteiner-navbar">
-        <p> <a class="nike" href="/views"> Nike. </a></p>
-    </nav>
-    <section class="text-center p-5">
+        <p><a class="home" href="/views/products">Inicio</a></p>
+        <h2 class="welcome">Bienvenido, {{user.first_name}} {{user.last_name}}</h2>
 
         <div>
-            <h1>Se le enviara un correo electronico con un link para recuperar su contraseña</h1>
+            {{#if user.cart}}
+            <a href="/views/cart/{{user.cart}}"><button class="btn btn-outline-light">Carrito</button></a>
+            {{/if}}
+            <a href="/api/sessions/logout"><button class="logout btn btn-outline-light">Logout</button></a>
         </div>
-        <form class="p-5" id="formPassword">
-            <input class="input-email" type="text" name="email" placeholder="Ingrese su mail">
-            <button type="submit" class="btn btn-outline-dark">Restablecer Contraseña</button>
-        </form>
+    </nav>
+    <section>
+        <h1 class="text-center p-5" >Su Compra se realizo Exitosamente</h1>
+        <h2 class="text-center pb-2">Le llegara un correo electronico con los datos de su compra</h2>
+        <p class="text-center p-2">Esperamos verlo nuevamente!</p>
     </section>
     <footer class="footer">
         <div class='footer-body'>
-
             <div class='footer-ayuda'>
                 <p class='footer-title-ayuda'>Ayuda</p>
                 <p>Envios y entregas</p>
@@ -45,5 +47,4 @@
             <div class='footer-terminos'>Terminos y condiciones</div>
         </div>
     </footer>
-</main>
-<script src="/js/forgot.js"></script>
+</body>

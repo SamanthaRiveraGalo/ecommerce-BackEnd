@@ -49,21 +49,18 @@
         <div class="total-price">
             <p>Precio total: ${{ amountTotal }}</p>
         </div>
-        <div class="buy">
-            <button class="btn btn-outline-dark">Comprar</button>
-        </div>
         <div class="vaciar-carrito">
-            <button type="button" id="delete-cart" class="deleteCart btn btn-outline-dark"
-                            title="Eliminar Productos" data-cartid="{{cid}}">Vaciar carrito</button>
+            <button type="button" id="delete-cart" class="deleteCart btn btn-outline-dark" title="Eliminar Productos"
+                data-cartid="{{cid}}">Vaciar carrito</button>
         </div>
+        <div class="buy" id="buyButton">
+            <button class="btn btn-outline-dark" id="payButton" data-cartid="{{cid}}">Finalizar Compra</button>
+        </div>
+
     </section>
 
     <footer class="footer">
         <div class='footer-body'>
-            <figure>
-                <img src="/assets/nike-jordan.svg" alt="imagen logo" />
-            </figure>
-
             <div class='footer-ayuda'>
                 <p class='footer-title-ayuda'>Ayuda</p>
                 <p>Envios y entregas</p>

@@ -6,6 +6,8 @@ const userRouter = require('./api/users.router.js')
 const sessionsRouter = require('./api/sessions.router.js')
 const mailRouter = require('./api/mail.router.js')
 const passwordRouter = require('./api/password.router.js')
+const paymentsRouter = require('./api/payments.router.js')
+const ticketRouter = require('./api/ticket.router.js')
 
 const viewsRouter = require('./views.router.js')
 const chatRouter = require('./chat.router.js')
@@ -17,12 +19,13 @@ const router = Router()
 //VIEWS
 router.use('/views', viewsRouter)
 router.use('/views', chatRouter)
-
 router.use('/mockingproduct', mockingRouter )
 router.use('/logger', logger)
 
 
 //API
+router.use('/api/payments', paymentsRouter)
+router.use('/api/ticket', ticketRouter)
 router.use('/api/products', productsRouter)
 router.use('/api/carts', cartRouter)
 router.use('/api/users', userRouter)
