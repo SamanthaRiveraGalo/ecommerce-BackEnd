@@ -55,6 +55,10 @@ class viewsController {
                 prevPage,
             } = await productService.getProducts(limit, page, query)
 
+            if (!user) {
+                return res.render("home")
+            }
+
             return res.render("products", {
                 products: products,
                 page,
@@ -64,7 +68,6 @@ class viewsController {
                 nextPage,
                 user: user
             })
-
 
         } catch (error) {
             req.logger.error(error)
@@ -85,6 +88,10 @@ class viewsController {
                 return res.status(404).send({ status: "Error", error: "id no encontrado", })
             }
 
+            if (!user) {
+                return res.render("home")
+            }
+
             res.status(200).render("productDetail", { product, user })
 
         } catch (error) {
@@ -98,6 +105,10 @@ class viewsController {
         const user = req.user
 
         const cart = await this.cartModel.findById({ _id: cid }).populate("products._id").lean()
+
+        if (!user) {
+            return res.render("home")
+        }
 
         const products = cart.products
 
@@ -116,6 +127,10 @@ class viewsController {
 
     payments = async (req, res) => {
         const user = req.user
+
+        if (!user) {
+            return res.render("home")
+        }
 
         res.render('paymentSucces', user)
     }
