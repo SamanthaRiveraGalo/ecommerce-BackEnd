@@ -55,20 +55,16 @@ class viewsController {
                 prevPage,
             } = await productService.getProducts(limit, page, query)
 
-            if(user){
+            return res.render("products", {
+                products: products,
+                page,
+                hasPrevPage,
+                hasNextPage,
+                prevPage,
+                nextPage,
+                user: user
+            })
 
-                return res.render("products", {
-                    products: products,
-                    page,
-                    hasPrevPage,
-                    hasNextPage,
-                    prevPage,
-                    nextPage,
-                    user: user
-                })
-            }
-            
-            return res.render("home")
 
         } catch (error) {
             req.logger.error(error)

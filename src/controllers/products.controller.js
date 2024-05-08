@@ -1,5 +1,5 @@
-const ProductDaoMongo = require("../dao/managerMongo/productManagerMongo");
-const { CustomError } = require("../services/customError.js");
+const ProductDaoMongo = require("../dao/managerMongo/productManagerMongo")
+const { CustomError }  = require("../services/CustomError.js")
 const { EErrors } = require("../services/enum.js");
 const { createProductErrorInfo } = require("../services/info");
 const { logger } = require("../utils/logger.js");
