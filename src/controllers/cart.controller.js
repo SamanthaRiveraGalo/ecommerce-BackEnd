@@ -1,7 +1,7 @@
 const CartDaoMongo = require("../dao/managerMongo/cartManagerMongo");
 const ProductDaoMongo = require("../dao/managerMongo/productManagerMongo");
 const { ticketService, usersService } = require("../repositories/index.js");
-const { CustomError } = require("../services/customError.js");
+const { CustomError } = require("../services/CustomError.js")
 const { EErrors } = require("../services/enum.js");
 const { generateCartRemoveErrorInfo } = require("../services/info.js");
 const { sendMail } = require("../utils/sendMail.js");

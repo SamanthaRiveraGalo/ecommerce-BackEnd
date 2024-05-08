@@ -1,7 +1,7 @@
 const { configObject } = require("../config/index.js")
 const userModel = require("../dao/models/users.model.js")
 const { usersService } = require("../repositories/index.js")
-const { CustomError } = require("../services/customError.js")
+const { CustomError} = require("../services/CustomError.js")
 const { EErrors } = require("../services/enum.js")
 const { generateUserErrorInfo } = require("../services/info.js")
 const { sendMail } = require("../utils/sendMail.js")
