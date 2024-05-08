@@ -2,7 +2,7 @@ const { configObject } = require("../config/index.js")
 const { usersService } = require("../repositories/index.js")
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer')
-const { createHash } = require("../utils/hashPassword.js")
+const { createHash , isValidPassword } = require("../utils/hashPassword.js")
 
 class PasswordController {
     constructor() {
@@ -81,11 +81,11 @@ class PasswordController {
                 return res.status(401).send('Usuario no encontrado')
             }
 
-            const hashPassword = createHash(newpassword);
+            const hashPassword = createHash(newpassword)
             console.log(hashPassword)
 
             if (hashPassword === user.password) {
-                return res.status(400).json({ error: 'La nueva contraseña no puede ser igual a la anterior' });
+                return res.status(400).json({ error: 'La nueva contraseña no puede ser igual a la anterior' })
             }
 
             const result = await this.userServiceMongo.updateUser(user._id, { password: hashPassword })

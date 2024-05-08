@@ -1,9 +1,10 @@
 const { configObject } = require("../config/index.js")
 const userModel = require("../dao/models/users.model.js")
 const { usersService } = require("../repositories/index.js")
-const { CustomError} = require("../services/CustomError.js")
+const { CustomError } = require("../services/CustomError.js")
 const { EErrors } = require("../services/enum.js")
 const { generateUserErrorInfo } = require("../services/info.js")
+const { createHash } = require("../utils/hashPassword.js")
 const { sendMail } = require("../utils/sendMail.js")
 
 class UserController {
@@ -44,7 +45,9 @@ class UserController {
                 })
             }
 
-            const newUser = { first_name, last_name, email, password }
+            const hashedPassword = await createHash(password)
+
+            const newUser = { first_name, last_name, email, password: hashedPassword }
 
             const result = await this.userServiceMongo.createUser(newUser)
 
@@ -171,7 +174,7 @@ class UserController {
 
             const emailAddresses = users.map(user => user.email)
 
-            const htmlContent =  `
+            const htmlContent = `
                       <p>Lamentablemente tu cuenta ha sido eliminada de nuestra plataforma debido a inactividad.</p>
                       <p>Si deseas volver a utilizar nuestros servicios, por favor regístrate nuevamente en <a href="http://localhost:8080/views/register">CLICK HERE</a></p>
                       `

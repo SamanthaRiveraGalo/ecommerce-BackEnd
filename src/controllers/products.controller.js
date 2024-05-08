@@ -103,7 +103,7 @@ class ProductController {
             const productToUpdate = req.body
             const pid = req.params.pid
 
-            const updateProduct = await this.productServiceMongo.updateProduct(pid, productToUpdate);
+            const updateProduct = await this.productServiceMongo.updateProduct(pid, productToUpdate)
             if (!updateProduct) {
 
                 return res.status(400).send({
@@ -115,7 +115,7 @@ class ProductController {
             return res.status(200).send({
                 status: "Success",
                 payload: updateProduct,
-            });
+            })
 
         } catch (error) {
             req.logger.error(error)
