@@ -2,7 +2,7 @@ const { configObject } = require("../config/index.js")
 const { usersService } = require("../repositories/index.js")
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer')
-const { createHash , isValidPassword } = require("../utils/hashPassword.js")
+const { createHash, isValidPassword } = require("../utils/hashPassword.js")
 
 class PasswordController {
     constructor() {
@@ -65,8 +65,6 @@ class PasswordController {
             const newpassword = req.body.newpassword
             const { token } = req.body
 
-            console.log(newpassword)
-            
             const data = jwt.verify(token, configObject.jwt_secret_key)
 
             const email = data.email
@@ -81,28 +79,30 @@ class PasswordController {
                 return res.status(401).send('Usuario no encontrado')
             }
 
-            const hashPassword = createHash(newpassword)
-            console.log(hashPassword)
+            if (isValidPassword(user, newpassword)) return res.status(400).json({ message: "Las contraseñas son iguales." })
 
-            if (hashPassword === user.password) {
-                return res.status(400).json({ error: 'La nueva contraseña no puede ser igual a la anterior' })
-            }
+            user.password = createHash(newpassword)
 
-            const result = await this.userServiceMongo.updateUser(user._id, { password: hashPassword })
-            console.log(result)
+            await this.userServiceMongo.updateUser(user._id, user)
 
-            if (result.success) {
-                res.status(200).send({
-                    success: true,
-                    message: "Contraseña actualizada correctamente",
-                    redirect: "/views/login" 
-                })
-            } else {
-                res.status(400).send({
-                    success: false,
-                    message: "Error al actualizar la contraseña"
-                })
-            }
+            res.redirect("/views/login")
+            // const hashPassword = createHash(newpassword)
+
+            // const result = await this.userServiceMongo.updateUser(user._id, { password: hashPassword })
+            // console.log(result)
+
+            // if (result.success) {
+            //     res.status(200).send({
+            //         success: true,
+            //         message: "Contraseña actualizada correctamente",
+            //         redirect: "/views/login" 
+            //     })
+            // } else {
+            //     res.status(400).send({
+            //         success: false,
+            //         message: "Error al actualizar la contraseña"
+            //     })
+            // }
 
         } catch (error) {
             console.log(error)
